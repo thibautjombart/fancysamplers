@@ -15,24 +15,28 @@ emcmc(f, param = list(x = 0), to.move = TRUE, n = 200,
 
 \item{to.move}{a logical or an integer vector indicating which parts of 'param' should be moved in the MCMC}
 
-\item{n}{a number of iterations for the MCMC}
+\item{n}{a number of iterations for the eMCMC}
+
+\item{cold.block.size}{the size of cold blocks}
+
+\item{hot.block.size}{the size of hot blocks}
 
 \item{sd}{the standard deviation of the proposal normal distribution}
 
-\item{max.temp}{the maximum temperature to be used}
+\item{min.temp}{the  maximum temperature to be used}
 
-\item{omega}{the probability of sampling from the cool distribution}
+\item{max.temp}{the maximum temperature to be used}
 }
 \description{
-This is a variation on the tempering algorithm
+This is a variation on the tempering algorithm. It relies on alternative blocks of cold chains with blocks of very hot chains.
 }
 \examples{
 ## try with a basic normal density
 f1 <- function(x){dnorm(x, log=TRUE)}
 
 ## basic MCMC
-plot(mc1)
 mc1 <- metro(f1)
+plot(mc1)
 
 ## eMCMC
 emc1 <- emcmc(f1)

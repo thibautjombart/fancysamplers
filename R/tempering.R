@@ -1,16 +1,19 @@
 #' Eruptive MCMC
 #'
-#' This is a variation on the tempering algorithm
+#' This is a variation on the tempering algorithm. It relies on alternative blocks of cold chains with blocks of very hot chains.
 #'
 #' @export
+#'
 #' @author Thibaut Jombart \email{t.jombart@@imperial.ac.uk}
 #'
 #' @param f a function computing log-densities
 #' @param param a list of named parameters passed on to 'f'; parameters must be given their initial values
 #' @param to.move a logical or an integer vector indicating which parts of 'param' should be moved in the MCMC
-#' @param n a number of iterations for the MCMC
+#' @param n a number of iterations for the eMCMC
+#' @param cold.block.size the size of cold blocks
+#' @param hot.block.size the size of hot blocks
 #' @param sd the standard deviation of the proposal normal distribution
-#' @param omega the probability of sampling from the cool distribution
+#' @param min.temp the  maximum temperature to be used
 #' @param max.temp the maximum temperature to be used
 #'
 #' @examples
@@ -19,8 +22,8 @@
 #' f1 <- function(x){dnorm(x, log=TRUE)}
 #'
 #' ## basic MCMC
-#' plot(mc1)
 #' mc1 <- metro(f1)
+#' plot(mc1)
 #'
 #' ## eMCMC
 #' emc1 <- emcmc(f1)
