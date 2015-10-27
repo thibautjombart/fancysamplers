@@ -71,5 +71,5 @@ dmultimod <- function(x, k=2, mean=NULL, sd=NULL, log=TRUE,
 
     ## RETURN ##
     return(out)
-} # end rmultimod
+} # end dmultimod
 

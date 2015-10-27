@@ -5,14 +5,37 @@
 #' @export
 #' @author Thibaut Jombart \email{t.jombart@@imperial.ac.uk}
 #'
-#' @param x a dataset to compute the log-density on (likelihood, posterior, etc.)
 #' @param f a function computing log-densities
 #' @param param a list of named parameters passed on to 'f'; parameters must be given their initial values
 #' @param to.move a logical or an integer vector indicating which parts of 'param' should be moved in the MCMC
 #' @param n a number of iterations for the MCMC
 #'
 #' @importFrom coda mcmc
-metro <- function(f, param=list(x=1), to.move=TRUE, n=1e4,
+#'
+#' @examples
+#'
+#' ## try with a basic normal density
+#' f1 <- function(x){dnorm(x, log=TRUE)}
+#' mc1 <- metro(f1)
+#' head(mc1)
+#' tail(mc1)
+#' plot(mc1)
+#'
+#' ## change initial point
+#' mc2 <- metro(f1, list(x=-10))
+#' plot(mc2)
+#' 
+#' ## try with a mixture of densities
+#' fmix <- function(x){log(dnorm(x, mean=-3)+dnorm(x, mean=1, sd=.5))}
+#' mc3 <- metro(fmix, list(x=0))
+#' plot(mc3)
+#'
+#' ## try harder example
+#' fmix2 <- function(x){log(dnorm(x, mean=-5)+dnorm(x, mean=5, sd=.5))}
+#' mc4 <- metro(fmix2, list(x=0), sd=3, n.iter=1e4)
+#' plot(mc4)
+#' 
+metro <- function(f, param=list(x=0), to.move=TRUE, n=1e3,
                   sd=1){
     ## FIND WHICH ARGUMENTS NEED TO MOVE ##
     nParam <- length(param)
