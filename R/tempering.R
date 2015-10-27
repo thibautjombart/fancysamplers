@@ -17,29 +17,36 @@
 #'
 #' ## try with a basic normal density
 #' f1 <- function(x){dnorm(x, log=TRUE)}
-#' mc1 <- metro(f1)
-#' head(mc1)
-#' tail(mc1)
-#' plot(mc1)
 #'
-#' ## change initial point
-#' mc2 <- metro(f1, list(x=-10))
-#' plot(mc2)
+#' ## basic MCMC
+#' plot(mc1)
+#' mc1 <- metro(f1)
+#'
+#' ## eMCMC
+#' emc1 <- emcmc(f1)
+#' plot(emc1[[1]]) # all chains
+#' plot(emc1[[2]]) # thinned
 #'
 #' ## try with a mixture of densities
-#' fmix <- function(x){log(dnorm(x, mean=-3)+dnorm(x, mean=1, sd=.5))}
-#' mc3 <- metro(fmix, list(x=0))
-#' plot(mc3)
+#' fmix <- function(x){log(dnorm(x, mean=-5) +
+#'                         dnorm(x, mean=5, sd=.5))}
 #'
-#' ## try harder example
-#' fmix2 <- function(x){log(dnorm(x, mean=-5)+dnorm(x, mean=5, sd=.5))}
-#' mc4 <- metro(fmix2, list(x=0), sd=3, n=1e4)
-#' plot(mc4)
+#' plot(function(x) exp(fmix(x)), xlim=c(-10,10))
+#' title("Target density")
+#'
+#' ## basic MCMC
+#' mc2 <- metro(fmix, list(x=0), n=6e4)
+#' plot(mc2)
+#'
+#' ## eMCMC
+#' emc2 <- emcmc(fmix)
+#' plot(emc2[[1]]) # all chains
+#' plot(emc2[[2]]) # thinned
 #'
 #' @importFrom coda mcmc
 #' @importFrom stats rnorm runif
 #'
-emcmc <- function(f, param=list(x=0), to.move=TRUE, n=100,
+emcmc <- function(f, param=list(x=0), to.move=TRUE, n=200,
                   cold.block.size=200, hot.block.size=100,
                   sd=1, min.temp=10, max.temp=100){
     ## FIND WHICH ARGUMENTS NEED TO MOVE ##
@@ -110,5 +117,5 @@ emcmc <- function(f, param=list(x=0), to.move=TRUE, n=100,
     out.thin <- mcmc(out.thin, start=1, end=n, thin=1)
 
     ## return
-    return(list(thin=out.thin, all=out.all))
+    return(list(all=out.all, thin=out.thin))
 } # end emcmc
