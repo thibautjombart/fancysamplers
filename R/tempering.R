@@ -40,8 +40,8 @@
 #' @importFrom stats rnorm runif
 #'
 emcmc <- function(f, param=list(x=0), to.move=TRUE, n=100,
-                   cold.block.size=100, hot.block.size=100,
-                   sd=1, min.temp=2, max.temp=10){
+                  cold.block.size=200, hot.block.size=100,
+                  sd=1, min.temp=10, max.temp=100){
     ## FIND WHICH ARGUMENTS NEED TO MOVE ##
     nParam <- length(param)
     if(nParam<1) stop("At least one parameter is needed to define the domain of f")
@@ -78,11 +78,11 @@ emcmc <- function(f, param=list(x=0), to.move=TRUE, n=100,
         param <- out.param[i-1]
         for(j in to.move){
             new <- param
-            new[[j]] <- rnorm(1, mean=new[[j]],sd=sd)
-            logratio <- (logdens(new) - logdens(param))/alpha[i]
+            new[[j]] <- rnorm(1, mean=new[[j]], sd=sd)
+            logratio <- (logdens(new) - logdens(param))/out.alpha[i]
 
             ## accept/reject
-                if(logratio >= RAND[COUNTER]){param <- new}
+            if(logratio >= RAND[COUNTER]){param <- new}
             COUNTER <- COUNTER+1
         }
 
@@ -99,7 +99,7 @@ emcmc <- function(f, param=list(x=0), to.move=TRUE, n=100,
     out.param <- matrix(unlist(out.param), byrow=TRUE, ncol=nParam)
     colnames(out.param) <- param.names
     out.all <- cbind(out.log, out.alpha, out.param)
-    colnames(out)[1:2] <- c("logdens", "alpha")
+    colnames(out.all)[1:2] <- c("logdens", "alpha")
 
     ## thined version (keeping last of cold blocks)
     toKeep <- seq(from=cold.block.size, by=cold.block.size+hot.block.size, length=n)
