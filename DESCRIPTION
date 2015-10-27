@@ -6,7 +6,7 @@ Authors@R: c(TJ=person("Thibaut", "Jombart", , "t.jombart@imperial.ac.uk", role 
 	   )
 Description: Fancy samplers.
 Depends: R (>= 3.1.3)
-Imports: utils,stats
+Imports: utils,stats,coda
 License: GPL (>=2)
 LazyData: true
 

@@ -10,8 +10,6 @@
 #' @param to.move a logical or an integer vector indicating which parts of 'param' should be moved in the MCMC
 #' @param n a number of iterations for the MCMC
 #'
-#' @importFrom coda mcmc
-#'
 #' @examples
 #'
 #' ## try with a basic normal density
@@ -32,8 +30,11 @@
 #'
 #' ## try harder example
 #' fmix2 <- function(x){log(dnorm(x, mean=-5)+dnorm(x, mean=5, sd=.5))}
-#' mc4 <- metro(fmix2, list(x=0), sd=3, n.iter=1e4)
+#' mc4 <- metro(fmix2, list(x=0), sd=3, n=1e4)
 #' plot(mc4)
+#' 
+#' @importFrom coda mcmc
+#' @importFrom stats rnorm runif
 #' 
 metro <- function(f, param=list(x=0), to.move=TRUE, n=1e3,
                   sd=1){
