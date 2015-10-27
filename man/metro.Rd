@@ -14,6 +14,8 @@ metro(f, param = list(x = 0), to.move = TRUE, n = 1000, sd = 1)
 \item{to.move}{a logical or an integer vector indicating which parts of 'param' should be moved in the MCMC}
 
 \item{n}{a number of iterations for the MCMC}
+
+\item{sd}{the standard deviation of the proposal normal distribution}
 }
 \description{
 This is a basic Metropolis algorithm

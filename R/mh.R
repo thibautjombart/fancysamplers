@@ -9,6 +9,7 @@
 #' @param param a list of named parameters passed on to 'f'; parameters must be given their initial values
 #' @param to.move a logical or an integer vector indicating which parts of 'param' should be moved in the MCMC
 #' @param n a number of iterations for the MCMC
+#' @param sd the standard deviation of the proposal normal distribution
 #'
 #' @examples
 #'
