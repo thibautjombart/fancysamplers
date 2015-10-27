@@ -23,7 +23,7 @@
 #' ## change initial point
 #' mc2 <- metro(f1, list(x=-10))
 #' plot(mc2)
-#' 
+#'
 #' ## try with a mixture of densities
 #' fmix <- function(x){log(dnorm(x, mean=-3)+dnorm(x, mean=1, sd=.5))}
 #' mc3 <- metro(fmix, list(x=0))
@@ -33,11 +33,11 @@
 #' fmix2 <- function(x){log(dnorm(x, mean=-5)+dnorm(x, mean=5, sd=.5))}
 #' mc4 <- metro(fmix2, list(x=0), sd=3, n=1e4)
 #' plot(mc4)
-#' 
+#'
 #' @importFrom coda mcmc
 #' @importFrom stats rnorm runif
-#' 
-metro <- function(f, param=list(x=0), to.move=TRUE, n=1e3,
+#'
+metro <- function(f, param=list(x=0), to.move=TRUE, n=1e4,
                   sd=1){
     ## FIND WHICH ARGUMENTS NEED TO MOVE ##
     nParam <- length(param)
@@ -45,7 +45,7 @@ metro <- function(f, param=list(x=0), to.move=TRUE, n=1e3,
     if(!is.null(param)) to.move <- rep(to.move, length=nParam)
     if(is.logical(to.move)) to.move <- which(to.move)
     param.names <- names(param)
-    
+
     ## DEFINE OVERAL DENSITY COMPUTATION ##
     logdens <- function(param){
         return(sum(do.call(f, param)))
@@ -84,6 +84,7 @@ metro <- function(f, param=list(x=0), to.move=TRUE, n=1e3,
     out.param <- matrix(unlist(out.param), byrow=TRUE, ncol=nParam)
     colnames(out.param) <- param.names
     out <- cbind(out.log, out.param)
+    colnames(out)[1] <- "logdens"
     out <- mcmc(out, start=1, end=n, thin=1)
     return(out)
 } # end metro
